@@ -1,8 +1,10 @@
 package com.apiRestFull.todosimple.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.apiRestFull.todosimple.models.Task;
 import com.apiRestFull.todosimple.models.User;
@@ -10,6 +12,7 @@ import com.apiRestFull.todosimple.repositories.TaskRepository;
 
 import jakarta.transaction.Transactional;
 
+@Service
 public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
@@ -23,6 +26,12 @@ public class TaskService {
         return task.orElseThrow(() -> new RuntimeException(
             "Tarefa não encontrada. ID: " + id + ", Tipo: " + Task.class.getName()
         ));
+    }
+
+    public List<Task> findAllByUserId(Long userId) {
+        List<Task> tasks = this.taskRepository.findByUser_Id(userId);
+
+        return tasks;
     }
 
     @Transactional
